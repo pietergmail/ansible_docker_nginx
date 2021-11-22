@@ -1,0 +1,25 @@
+---
+- hosts: webserver
+
+  tasks:
+    - name: install and check Git
+      become: yes
+      package:
+        name: git
+        state: present
+
+    - name: Install and check docker
+      become: yes
+      package:
+        name:
+          - docker
+          - docker.io
+          - docker-compose
+          - curl
+        state: latest
+
+    - name: Git directory maken
+      become: yes
+      file:
+        path: "/usr/local/etc/dockerstuff"
+        state: directory
