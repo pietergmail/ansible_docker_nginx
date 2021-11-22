@@ -1,0 +1,15 @@
+---
+- hosts: webserver
+
+  tasks:
+    - name: stop containers
+      become: yes
+      shell: docker stop $(docker ps -a -q)
+
+    - name: remove containers
+      become: yes
+      shell: docker rm $(docker ps -a -q)
+      register: shell_result
+
+    - debug:
+        var: shell_result.stdout_lines

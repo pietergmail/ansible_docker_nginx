@@ -23,3 +23,34 @@
       file:
         path: "/usr/local/etc/dockerstuff"
         state: directory
+
+    - name: clone needed files from github
+      become: yes
+      git:
+        repo: https://github.com/MatthiasVeelaert/Docker_webserver_files.git
+        dest: /usr/local/etc/Docker_webservers_files
+        force: yes
+
+    - name: permissions request.sh
+      file:
+        dest: /usr/local/etc/Docker_webservers_files/request.sh
+        mode: a+x
+
+    - name: permission dockercomposeup.sh
+      become: yes
+      file:
+        dest: /usr/local/etc/Docker_webservers_files/dockercomposeup.sh
+        mode: a+x
+
+    - name: starting docker-compose
+      become: yes
+      command: chdir=/usr/local/etc/Docker_webservers_files/ sh dockercomposeup.sh
+
+    - name: check requests
+      become: yes
+      command: chdir=/usr/local/etc/Docker_webservers_files/ sh request.sh
+      register: shell_result
+
+    - debug:
+        var: shell_result.stdout_lines
+
