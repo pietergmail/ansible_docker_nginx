@@ -1,3 +1,3 @@
 # ansible_docker_nginx
 
-This is an old project
+This is an old school project
